@@ -23,10 +23,6 @@ public class UpdateWidgetService extends IntentService {
     public static final int COL_AWAY = 4;
     public static final int COL_HOME_GOALS = 6;
     public static final int COL_AWAY_GOALS = 7;
-    public static final int COL_DATE = 1;
-    public static final int COL_LEAGUE = 5;
-    public static final int COL_MATCHDAY = 9;
-    public static final int COL_ID = 8;
     public static final int COL_MATCHTIME = 2;
 
     public static final String TAG = UpdateWidgetService.class.getSimpleName();
@@ -71,8 +67,11 @@ public class UpdateWidgetService extends IntentService {
                 views.setTextViewText(R.id.score_textview, score);
                 views.setTextViewText(R.id.away_name, cursor.getString(COL_AWAY));
                 views.setTextViewText(R.id.data_textview, cursor.getString(COL_MATCHTIME));
-                views.setImageViewResource(R.id.home_crest, R.drawable.ic_launcher);
-                views.setImageViewResource(R.id.away_crest, R.drawable.ic_launcher);
+
+                views.setImageViewResource(R.id.home_crest, Utilies.getTeamCrestByTeamName(
+                        cursor.getString(COL_HOME)));
+                views.setImageViewResource(R.id.away_crest, Utilies.getTeamCrestByTeamName(
+                        cursor.getString(COL_HOME)));
             } catch (CursorIndexOutOfBoundsException | NullPointerException e) {
                 e.printStackTrace();
             }
