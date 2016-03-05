@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -58,20 +59,23 @@ public class UpdateWidgetService extends IntentService {
 
             RemoteViews views = new RemoteViews(this.getApplicationContext().getPackageName(), R.layout.widget_frame);
 
+            try {
+                Cursor cursor = getContentResolver().query(DatabaseContract.BASE_CONTENT_URI, null, null, null, null);
 
-            Cursor cursor = getContentResolver().query(DatabaseContract.BASE_CONTENT_URI, null, null, null, null);
+                Log.d("Widget", String.valueOf(cursor.getCount()));
+                cursor.moveToFirst();
+                assert cursor != null;
+                String score = Utilies.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS));
 
-            Log.d("Widget", String.valueOf(cursor.getCount()));
-            cursor.moveToFirst();
-            assert cursor != null;
-            String score = Utilies.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS));
-
-            views.setTextViewText(R.id.home_name, cursor.getString(COL_HOME));
-            views.setTextViewText(R.id.score_textview, score);
-            views.setTextViewText(R.id.away_name, cursor.getString(COL_AWAY));
-            views.setTextViewText(R.id.data_textview, cursor.getString(COL_MATCHTIME));
-            views.setImageViewResource(R.id.home_crest, R.drawable.ic_launcher);
-            views.setImageViewResource(R.id.away_crest, R.drawable.ic_launcher);
+                views.setTextViewText(R.id.home_name, cursor.getString(COL_HOME));
+                views.setTextViewText(R.id.score_textview, score);
+                views.setTextViewText(R.id.away_name, cursor.getString(COL_AWAY));
+                views.setTextViewText(R.id.data_textview, cursor.getString(COL_MATCHTIME));
+                views.setImageViewResource(R.id.home_crest, R.drawable.ic_launcher);
+                views.setImageViewResource(R.id.away_crest, R.drawable.ic_launcher);
+            } catch (CursorIndexOutOfBoundsException | NullPointerException e) {
+                e.printStackTrace();
+            }
 
             views.setOnClickPendingIntent(R.id.frame_widget, pendingIntent);
 
