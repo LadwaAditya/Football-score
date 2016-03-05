@@ -34,7 +34,7 @@ public class WidgetCollectionProvider extends AppWidgetProvider {
             Intent intentWidget = new Intent(context, WidgetCollectionService.class);
             intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
             intentWidget.setData(Uri.parse(intentWidget.toUri(Intent.URI_INTENT_SCHEME)));
-            views.setRemoteAdapter(id, R.id.widgetListviewCollection, intentWidget);
+            views.setRemoteAdapter(R.id.widgetListviewCollection, intentWidget);
 
             views.setOnClickPendingIntent(R.id.frame_widget, pendingIntent);
 
