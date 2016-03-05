@@ -43,6 +43,13 @@ public class UpdateWidgetService extends IntentService {
             PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, inten, 0);
 
             RemoteViews views = new RemoteViews(this.getApplicationContext().getPackageName(), R.layout.widget_frame);
+
+
+            views.setTextViewText(R.id.home_name,"Home");
+            views.setTextViewText(R.id.score_textview,"0-1");
+            views.setTextViewText(R.id.away_name,"Away");
+            views.setTextViewText(R.id.data_textview,"This is some data");
+
             views.setOnClickPendingIntent(R.id.frame_widget, pendingIntent);
 
             appWidgetManager.updateAppWidget(id, views);
